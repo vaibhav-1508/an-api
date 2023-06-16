@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use std::sync::Arc;
 use warp::{http, Filter};
 
-type Items = HashMap<String, i32>;
+type Items = HashMap<String, String>;
 
 #[derive(Debug, Deserialize, Serialize, Clone)]
 struct Id {
@@ -14,7 +14,7 @@ struct Id {
 #[derive(Debug, Deserialize, Serialize, Clone)]
 struct Item {
     name: String,
-    quantity: i32,
+    branch: String,
 }
 
 #[derive(Clone)]
@@ -34,7 +34,7 @@ async fn update_student_list(
     item: Item,
     store: Store,
 ) -> Result<impl warp::Reply, warp::Rejection> {
-    store.student_list.write().insert(item.name, item.quantity);
+    store.student_list.write().insert(item.name, item.branch);
 
     Ok(warp::reply::with_status(
         "Added items to the student list",
